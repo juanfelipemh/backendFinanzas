@@ -19,7 +19,6 @@ export const obtenerBalance = async (req, res) => {
                 let egresos = await Egresos.sum('valor');
 
                 let resultado = ingresos - egresos;
-                console.log(resultado);
                 res.status(200).json(resultado);
                 respuestaEnviada = true;
             } catch (error) {
