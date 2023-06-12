@@ -62,11 +62,11 @@ import GastosFijos from "./models/GastosFijosModel.js"
 import dbConnection from "./config/Database.js";
 import session from "express-session";
 
-/*
+
 (async()=>{
     await dbConnection.sync()
 })();  
-*/
+
 
 app.use("/api", usuarioRoutes);
 app.use("/api", authRoutes);
