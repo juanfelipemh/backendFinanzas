@@ -5,6 +5,6 @@ import checkAuth from "../middleware/authValidacion.js";
 
 const router = express.Router();
 
-router.get("/resultado", checkAuth, obtenerBalance);
+router.get("/resultado", obtenerBalance);
 
 export default router;
