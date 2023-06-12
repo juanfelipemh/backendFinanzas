@@ -4,7 +4,7 @@ import checkAuth from "../middleware/authValidacion.js";
 
 const router = express.Router();
 
-router.post("/concepto/", checkAuth,  registrarConcepto);
+router.post("/concepto/nuevoConcepto", checkAuth,  registrarConcepto);
 router.get("/concepto/", checkAuth, obtenerConceptos);
 router.get("/concepto/:id", checkAuth, obtenerUnConcepto);
 router.put("/concepto/:id", checkAuth, modificarConcepto);
