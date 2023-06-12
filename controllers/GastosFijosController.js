@@ -2,15 +2,6 @@ import GastosFijos from "../models/GastosFijosModel.js"
 
 
 export const registrarGastoFijo = async (req, res) => {
-    const validarConcepto = await GastosFijos.findOne({
-        where: {
-            concepto: req.body.concepto
-        }
-    })
-
-    if(validarConcepto){
-        return res.status(401).json({msg: "Gasto fijo ya existe"})
-    }
 
     const { concepto, valor, observacion, fecha } = req.body;
 
