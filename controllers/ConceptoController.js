@@ -2,17 +2,17 @@ import Concepto from "../models/ConceptoModel.js"
 
 
 export const registrarConcepto = async (req, res) => {
+    const { concepto } = req.body;
+
     const validarConcepto = await Concepto.findOne({
         where: {
-            concepto: req.body.concepto
+            concepto: concepto
         }
     })
 
     if(validarConcepto){
         return res.status(401).json({msg: "Concepto ya se encuentra registrado"})
     }
-
-    const { concepto } = req.body;
 
     try {
         const nuevoConcepto = await Concepto.create({
