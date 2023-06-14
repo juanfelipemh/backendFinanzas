@@ -1,3 +1,4 @@
+import { Sequelize } from "sequelize";
 import GastosFijos from "../models/GastosFijosModel.js"
 
 
@@ -6,26 +7,30 @@ export const registrarGastoFijo = async (req, res) => {
     const { concepto, valor, observacion, fecha } = req.body;
 
     try {
-        const nuevoGastoFijo = await GastosFijos.create({
-            concepto: concepto,
-            valor: valor,
-            observacion: observacion,
-            fecha: fecha
+        await Sequelize.transaction(async (transaction) => {
+            await GastosFijos.create({
+                concepto: concepto,
+                valor: valor,
+                observacion: observacion,
+                fecha: fecha
+            },
+                { transaction })
         })
-        res.status(200).json(nuevoGastoFijo)
+        res.status(200).json({ msg: "Registro exitoso" })
+
     } catch (error) {
-        res.status(404).json({msg: error.message})
+        res.status(404).json({ msg: error.message })
     }
 }
 
 export const obtenerGastosFijos = async (req, res) => {
     try {
-        const respuesta = await GastosFijos.findAll({
-            attributes: ['UUID', 'concepto','valor','observacion','fecha']
+        await GastosFijos.findAll({
+            attributes: ['UUID', 'concepto', 'valor', 'observacion', 'fecha']
         })
-        res.status(200).json(respuesta)
+        res.status(200).json({ msg: "Datos obtenidos" })
     } catch (error) {
-        res.status(404).json({msg: error.message})
+        res.status(404).json({ msg: error.message })
     }
 }
 
@@ -37,20 +42,20 @@ export const obtenerUnGastoFijo = async (req, res) => {
         }
     })
 
-    if(!validarGasto){
-        return res.status(401).json({msg: "Codigo de gasto fijo no es valido"})
+    if (!validarGasto) {
+        return res.status(401).json({ msg: "Codigo de gasto fijo no es valido" })
     }
 
     try {
         const respuesta = await GastosFijos.findOne({
-            attributes: ['UUID','valor','concepto','observacion','fecha'],
+            attributes: ['UUID', 'valor', 'concepto', 'observacion', 'fecha'],
             where: {
                 UUID: req.params.id
             }
         })
-        res.status(200).json(respuesta)
+        res.status(200).json({ msg: "Registro exitoso" })
     } catch (error) {
-        res.status(400).json({msg: error.message})
+        res.status(400).json({ msg: error.message })
     }
 }
 
@@ -61,8 +66,8 @@ export const modificarGastoFijo = async (req, res) => {
         }
     })
 
-    if(!validarGasto){
-        return res.status(401).json({msg: "Codigo de gasto fijo no es valido"})
+    if (!validarGasto) {
+        return res.status(401).json({ msg: "Codigo de gasto fijo no es valido" })
     }
 
     const { valor, concepto, observacion, fecha } = req.body;
@@ -78,8 +83,9 @@ export const modificarGastoFijo = async (req, res) => {
                 id: validarGasto.id
             }
         })
+        res.status(200).json({ msg: "Registro exitoso" })
     } catch (error) {
-        res.status(400).json({msg: error.message})
+        res.status(400).json({ msg: error.message })
     }
 }
 
@@ -91,8 +97,8 @@ export const eliminarGastoFijo = async (req, res) => {
         }
     })
 
-    if(!validarGasto){
-        return res.status(401).json({msg: "Codigo de gasto fijo no es valido"})
+    if (!validarGasto) {
+        return res.status(401).json({ msg: "Codigo de gasto fijo no es valido" })
     }
 
     try {
@@ -101,7 +107,8 @@ export const eliminarGastoFijo = async (req, res) => {
                 id: validarGasto.id
             }
         })
+        res.status(205).json({ msg: "Eliminado exitosamente" })
     } catch (error) {
-        res.status(400).json({msg: error.message})
+        res.status(400).json({ msg: error.message })
     }
 }
