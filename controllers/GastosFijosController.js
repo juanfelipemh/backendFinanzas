@@ -24,9 +24,13 @@ export const registrarGastoFijo = async (req, res) => {
 }
 
 export const obtenerGastosFijos = async (req, res) => {
+
     try {
-        await GastosFijos.findAll({
-            attributes: ['UUID', 'concepto', 'valor', 'observacion', 'fecha']
+        await Sequelize.transaction(async (transaction) => {
+            const respuesta = await GastosFijos.findAll({
+                attributes: ['UUID', 'concepto', 'valor', 'observacion', 'fecha']
+            })
+            { transaction }
         })
         res.status(200).json({ msg: "Datos obtenidos" })
     } catch (error) {
