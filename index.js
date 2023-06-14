@@ -19,40 +19,23 @@ const PORT = process.env.PORT || 4000;
 
 const app = express();
 
-/*app.use(cors({
-    credentials: true,
-    origin: process.env.FRONTEND_URL
-})); */
-app.use(cors());
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({extended: true}))
 
-
-app.use(session({
-    secret: 'palabrasupersecreta', // Cambia 'secreto' por una cadena de caracteres aleatoria y segura
-    resave: false,
-    saveUninitialized: true
-  }));
-
-/*
-const dominiosPermitidos = [process.env.FRONTEND_URL];
 
 const corsOptions = {
-    origin: function(origin, callback){
-        if(dominiosPermitidos.indexOf(origin) !== -1){
-            callback(null, true)
-        } else {
-            callback(new Error("No permitido por CORS"))
-        }
-    }
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
 }
-*/
 
+app.use(cors(corsOptions));
 
+/*
 // CREAR TABLAS BASE DE DATOS
 import Usuario from "./models/UsuarioModel.js";
 import Ingresos from "./models/IngresosModel.js";
@@ -62,7 +45,7 @@ import GastosFijos from "./models/GastosFijosModel.js"
 import dbConnection from "./config/Database.js";
 import session from "express-session";
 
-/*
+
 (async()=>{
     await dbConnection.sync()
 })();   */
