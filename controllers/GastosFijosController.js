@@ -1,4 +1,3 @@
-import { Sequelize } from "sequelize";
 import GastosFijos from "../models/GastosFijosModel.js"
 
 
@@ -7,17 +6,13 @@ export const registrarGastoFijo = async (req, res) => {
     const { concepto, valor, observacion, fecha } = req.body;
 
     try {
-        await Sequelize.transaction(async (transaction) => {
-            await GastosFijos.create({
-                concepto: concepto,
-                valor: valor,
-                observacion: observacion,
-                fecha: fecha
-            },
-                { transaction })
+        await GastosFijos.create({
+            concepto: concepto,
+            valor: valor,
+            observacion: observacion,
+            fecha: fecha
         })
         res.status(200).json({ msg: "Registro exitoso" })
-
     } catch (error) {
         res.status(404).json({ msg: error.message })
     }
@@ -26,11 +21,8 @@ export const registrarGastoFijo = async (req, res) => {
 export const obtenerGastosFijos = async (req, res) => {
 
     try {
-        await Sequelize.transaction(async (transaction) => {
-            const respuesta = await GastosFijos.findAll({
-                attributes: ['UUID', 'concepto', 'valor', 'observacion', 'fecha']
-            })
-            { transaction }
+        const respuesta = await GastosFijos.findAll({
+            attributes: ['UUID', 'concepto', 'valor', 'observacion', 'fecha']
         })
         res.status(200).json({ msg: "Datos obtenidos" })
     } catch (error) {
